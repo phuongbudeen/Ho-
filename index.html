@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trắc nghiệm Hóa 11 - Bài 4: Đơn chất Nitrogen</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#1d2433;--muted:#64708a;--primary:#3b6cf6;--ok:#16a34a;--okbg:#e8f8ee;--bad:#dc2626;--badbg:#fdeaea;--line:#e3e8f2}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1420;--card:#171e2e;--text:#e8ecf5;--muted:#8d99b5;--primary:#6f93ff;--ok:#4ade80;--okbg:#12301f;--bad:#f87171;--badbg:#3a1818;--line:#26304a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+h1{font-size:1.4rem;margin:0 0 4px}
+h2{font-size:1.1rem;margin:0 0 12px;line-height:1.45}
+.muted{color:var(--muted);font-size:.92rem}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-size:1rem;font-weight:600;cursor:pointer;background:var(--primary);color:#fff}
+.btn.sec{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--card);color:var(--text);border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:1rem;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--primary)}
+.opt .l{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.opt.sel{border-color:var(--primary)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 16px}
+.bar>i{display:block;height:100%;background:var(--primary);transition:width .25s}
+.top{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted)}
+.exp{margin-top:6px;padding:12px;border-radius:12px;background:var(--bg);font-size:.95rem}
+label.chk{display:flex;gap:10px;align-items:center;margin:10px 0;cursor:pointer}
+.score{font-size:3rem;font-weight:800;text-align:center;margin:6px 0}
+.rev{border-left:4px solid var(--line);padding:4px 0 4px 12px;margin:14px 0}
+.rev.ok{border-color:var(--ok)}.rev.bad{border-color:var(--bad)}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.dot{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:.8rem;cursor:pointer}
+.dot.done{background:var(--primary);color:#fff;border-color:var(--primary)}
+.dot.cur{outline:2px solid var(--text)}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const Q = [
+{q:"Khí nào phổ biến nhất trong khí quyển Trái Đất?",o:["Oxygen.","Nitrogen.","Ozone.","Argon."],a:1,e:"Nitrogen chiếm khoảng 78% thể tích khí quyển."},
+{q:"Công thức hóa học của diêm tiêu Chile là",o:["Ca(NO₃)₂.","NH₄NO₃.","NH₄Cl.","NaNO₃."],a:3,e:"Diêm tiêu Chile là sodium nitrate, NaNO₃."},
+{q:"Trong tự nhiên, nguyên tố nitrogen tồn tại trong hợp chất hữu cơ nào sau đây?",o:["Tinh bột.","Cellulose.","Protein.","Glucose."],a:2,e:"Protein chứa nitrogen (nhóm amino); tinh bột, cellulose, glucose chỉ gồm C, H, O."},
+{q:"Tính chất nào sau đây <b>không</b> phải tính chất vật lí của N₂?",o:["Chất khí.","Không màu.","Nặng hơn không khí.","Tan ít trong nước."],a:2,e:"N₂ (M = 28) hơi nhẹ hơn không khí (M ≈ 29)."},
+{q:"Trong phòng thí nghiệm, người ta thu khí nitrogen bằng phương pháp dời nước vì",o:["N₂ nhẹ hơn không khí.","N₂ ít tan trong nước.","N₂ không duy trì sự sống, sự cháy.","N₂ hóa lỏng, hóa rắn ở nhiệt độ rất thấp."],a:1,e:"Khí ít tan trong nước thì thu được bằng cách đẩy nước."},
+{q:"Trong phản ứng tổng hợp ammonia từ nitrogen và hydrogen, nitrogen đóng vai trò là",o:["Chất khử.","Chất oxi hóa.","Acid.","Base."],a:1,e:"N từ 0 xuống −3 (nhận electron) nên N₂ là chất oxi hóa."},
+{q:"Trong những cơn mưa dông kèm sấm sét, nitrogen kết hợp trực tiếp với oxygen tạo thành sản phẩm là",o:["NO.","N₂O.","NH₃.","NO₂."],a:0,e:"Tia lửa điện: N₂ + O₂ → 2NO."},
+{q:"Trong phản ứng hóa hợp với oxygen, nitrogen đóng vai trò là",o:["Chất oxi hóa.","Base.","Chất khử.","Acid."],a:2,e:"N từ 0 lên +2 (nhường electron) nên N₂ là chất khử."},
+{q:"Nhận định nào sau đây về phân tử nitrogen là <b>đúng</b>?",o:["Có ba liên kết đơn bền vững.","Chứa nguyên tử nitrogen có số oxi hóa là −3.","Có liên kết cộng hóa trị có cực.","Thể hiện cả tính oxi hóa và tính khử."],a:3,e:"Số oxi hóa 0 là mức trung gian (giữa −3 và +5) nên N₂ vừa oxi hóa vừa khử."},
+{q:"Nhận định nào sau đây về đơn chất nitrogen là <b>sai</b>?",o:["Không màu và nhẹ hơn không khí.","Hóa hợp với oxygen ở nhiệt độ cao hoặc tia lửa điện.","Thể hiện tính oxi hóa mạnh ở điều kiện thường.","Khó hóa lỏng và ít tan trong nước."],a:2,e:"Ở điều kiện thường N₂ rất trơ, chỉ phản ứng khi đun nóng mạnh hoặc có tia lửa điện."},
+{q:"Nitrogen thể hiện tính khử trong phản ứng nào sau đây?",o:["N₂ + O₂ ⇌ 2NO","N₂ + 3H₂ ⇌ 2NH₃","N₂ + 3Mg → Mg₃N₂","N₂ + 6Li → 2Li₃N"],a:0,e:"Chỉ ở phản ứng với O₂, N tăng số oxi hóa từ 0 lên +2."},
+{q:"Trong phản ứng 3Mg + N₂ → Mg₃N₂, N₂ thể hiện",o:["Tính khử.","Tính oxi hóa.","Tính base.","Tính acid."],a:1,e:"N từ 0 xuống −3 (nhận electron) nên N₂ thể hiện tính oxi hóa."},
+{q:"Trong phản ứng N₂ + O₂ ⇌ 2NO, N₂ thể hiện",o:["Tính khử.","Tính oxi hóa.","Tính base.","Tính acid."],a:0,e:"N từ 0 lên +2 (nhường electron) nên N₂ thể hiện tính khử."},
+{q:"Cho phản ứng tổng hợp ammonia trong công nghiệp:<br>N₂(g) + 3H₂(g) ⇌ 2NH₃(g)  Δ<sub>r</sub>H°<sub>298</sub> = −91,8 kJ<br>Phát biểu nào sau đây đúng về phản ứng này?",o:["Năng lượng hệ tăng sau phản ứng.","Đây là phản ứng tỏa nhiệt.","Đây là phản ứng thu nhiệt.","Phản ứng không cần đun nóng ban đầu."],a:1,e:"Δ<sub>r</sub>H° < 0 nên phản ứng tỏa nhiệt."},
+{q:"Trong quá trình hình thành mưa acid, nitrogen phản ứng với oxygen tạo thành nitric oxide (NO). Tại sao phản ứng này lại thu nhiệt rất mạnh?",o:["Do liên kết trong phân tử NO quá bền.","Do cần năng lượng phá vỡ liên kết N≡N.","Do oxygen là chất oxi hóa mạnh.","Do sản phẩm NO có năng lượng rất thấp."],a:1,e:"Liên kết ba N≡N rất bền, cần nhiều năng lượng để phá vỡ."},
+{q:"Số liên kết sigma (σ) và số liên kết pi (π) trong phân tử nitrogen lần lượt là",o:["2 và 1.","0 và 3.","3 và 0.","1 và 2."],a:3,e:"N≡N gồm 1 liên kết σ và 2 liên kết π."},
+{q:"Trong nghiên cứu, khí nitrogen thường được dùng để tạo bầu khí quyển trơ dựa trên cơ sở nào?",o:["Nitrogen có tính oxi hóa mạnh.","Nitrogen rất bền với nhiệt.","Nitrogen khó hóa lỏng.","Nitrogen không có cực."],a:1,e:"N₂ rất bền, trơ về mặt hóa học nên không phản ứng với mẫu."},
+{q:"Cho câu ca dao sau:<br><i>“Lúa chiêm lấp ló đầu bờ<br>Hễ nghe tiếng sấm phất cờ mà lên.”</i><br>Câu ca dao trên đang đề cập đến phản ứng giữa hai chất khí nào trong thành phần không khí?",o:["N₂ và O₂.","N₂ và H₂.","CO và O₂.","N₂ và CO₂."],a:0,e:"Sấm sét (tia lửa điện): N₂ + O₂ → NO → NO₂ → HNO₃ → đạm nitrate cho cây."},
+{q:"Nitrogen lỏng được ứng dụng rộng rãi trong các hoạt động y học và nghiên cứu sinh học nhờ đặc điểm nào sau đây?",o:["Có nhiệt độ sôi rất thấp (−196°C).","Có tính oxi hóa mạnh ở nhiệt độ thấp.","Có áp suất hóa hơi cực kì thấp.","Có khả năng hòa tan nhiều mẫu vật."],a:0,e:"Nhiệt độ sôi −196°C nên dùng để bảo quản lạnh sâu mẫu vật."},
+{q:"Trong công nghiệp thực phẩm, khi nitrogen được bơm vào bao bì đóng gói các loại thực phẩm như snack, khoai tây chiên nhằm mục đích chính là",o:["Làm cho thực phẩm có vị giòn hơn.","Tiêu diệt hoàn toàn các loại vi sinh vật.","Ngăn chặn quá trình oxi hóa thực phẩm.","Tăng thêm khối lượng cho gói thực phẩm."],a:2,e:"N₂ đẩy oxygen ra khỏi bao bì nên thực phẩm không bị oxi hóa, ôi thiu."},
+{q:"Ở nhiệt độ thường, nitrogen (N₂) rất trơ về mặt hóa học và hầu như không tham gia các phản ứng. Nguyên nhân chính của hiện tượng này là do",o:["Phân tử có kích thước rất nhỏ bé.","Độ âm điện của nitrogen khá lớn.","Năng lượng liên kết rất lớn.","Phân tử nitrogen không có cực."],a:2,e:"Liên kết ba N≡N có năng lượng liên kết rất lớn (khoảng 945 kJ/mol)."},
+{q:"Thứ tự đúng của các sản phẩm chứa nitrogen được tạo thành từ hiện tượng sấm sét trong khí quyển đến khi rơi xuống là",o:["N₂ → NO₂ → NO → HNO₃ → NO₃⁻","N₂ → NO → HNO₃ → NO₂ → NO₃⁻","N₂ → NO → NO₂ → HNO₃ → NO₃⁻","N₂ → NH₃ → NO → NO₂ → HNO₃"],a:2,e:"N₂ → NO (sét) → NO₂ (gặp O₂) → HNO₃ (gặp O₂, H₂O) → NO₃⁻ (trong nước mưa)."},
+{q:"Quá trình tạo đạm nitrate từ nitrogen trong tự nhiên được mô tả theo sơ đồ:<br>N₂ →(+X) NO →(+X) NO₂ →(+X, +H₂O) HNO₃ → H⁺ + NO₃⁻<br>Công thức của X là",o:["N₂.","O₂.","H₂.","O₃."],a:1,e:"Cả ba bước đều cần oxygen: N₂ → NO → NO₂ → HNO₃."},
+{q:"Trong tự nhiên, phản ứng giữa nitrogen và oxygen (trong cơn mưa dông kèm sấm sét) là khởi đầu cho quá trình tạo và cung cấp loại phân bón nào cho cây?",o:["Phân kali.","Phân đạm ammonium.","Phân lân.","Phân đạm nitrate."],a:3,e:"Cuối chuỗi tạo ra HNO₃, phân li thành ion NO₃⁻ là phân đạm nitrate."},
+{q:"Cho sơ đồ chuyển hóa nitrogen trong khí quyển thành phân đạm:<br>N₂ →(+O₂) NO →(+O₂) NO₂ →(+O₂, +H₂O) HNO₃ → NO₃⁻<br>Số phản ứng thuộc loại oxi hóa – khử trong sơ đồ là",o:["3.","1.","4.","2."],a:0,e:"N₂→NO, NO→NO₂, NO₂→HNO₃ đều đổi số oxi hóa; HNO₃→NO₃⁻ chỉ là phân li."}
+];
+Q.forEach(x=>{ if(!x.o) x.o=[]; });
+const app=document.getElementById('app');
+let S={};
+const L=['A','B','C','D'];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function home(){
+  app.innerHTML=`<div class="card"><h1>⚗️ Bài 4: Đơn chất Nitrogen</h1>
+  <div class="muted">${Q.length} câu trắc nghiệm nhiều phương án lựa chọn</div>
+  <label class="chk"><input type="checkbox" id="sq"> Xáo trộn thứ tự câu hỏi</label>
+  <label class="chk"><input type="checkbox" id="so"> Xáo trộn thứ tự đáp án</label>
+  <div class="row">
+   <button class="btn" onclick="start('practice')">Luyện tập<br><small style="font-weight:400">Xem đáp án ngay sau mỗi câu</small></button>
+   <button class="btn sec" onclick="start('test')">Kiểm tra<br><small style="font-weight:400">Nộp bài rồi mới xem kết quả</small></button>
+  </div></div>`;
+}
+function start(mode){
+  const sq=document.getElementById('sq').checked, so=document.getElementById('so').checked;
+  let idx=Q.map((_,i)=>i); if(sq) idx=shuffle(idx);
+  const items=idx.map(i=>{
+    const q=Q[i]; let order=q.o.map((_,k)=>k); if(so) order=shuffle(order);
+    return {i,order,pick:null};
+  });
+  S={mode,items,cur:0,t0:Date.now()};
+  render();
+}
+function render(){
+  const it=S.items[S.cur], q=Q[it.i], n=S.items.length, practice=S.mode==='practice';
+  const locked=practice&&it.pick!==null;
+  const done=S.items.filter(x=>x.pick!==null).length;
+  let h=`<div class="card"><div class="top"><span>Câu ${S.cur+1}/${n}</span><span>${practice?'Luyện tập':'Kiểm tra'}</span></div>
+  <div class="bar"><i style="width:${done/n*100}%"></i></div>`;
+  if(!practice){h+='<div class="dots">'+S.items.map((x,k)=>`<button class="dot ${x.pick!==null?'done':''} ${k===S.cur?'cur':''}" onclick="go(${k})">${k+1}</button>`).join('')+'</div>';}
+  h+=`<h2>${q.q}</h2>`;
+  it.order.forEach((k,pos)=>{
+    let c='opt';
+    if(locked){ if(k===q.a) c+=' ok'; else if(k===it.pick) c+=' bad'; }
+    else if(it.pick===k) c+=' sel';
+    h+=`<button class="${c}" ${locked?'disabled':''} onclick="pick(${k})"><span class="l">${L[pos]}</span><span>${q.o[k]}</span></button>`;
+  });
+  if(locked) h+=`<div class="exp">${it.pick===q.a?'✅ <b>Chính xác!</b>':'❌ <b>Chưa đúng.</b>'} ${q.e}</div>`;
+  h+=`<div class="row">
+    <button class="btn sec" onclick="go(${S.cur-1})" ${S.cur===0?'disabled':''}>← Trước</button>`;
+  if(S.cur<n-1) h+=`<button class="btn" onclick="go(${S.cur+1})" ${practice&&!locked?'disabled':''}>Tiếp →</button>`;
+  else h+=`<button class="btn" onclick="finish()" ${practice&&!locked?'disabled':''}>Nộp bài</button>`;
+  if(!practice && S.cur<n-1) h+=`<button class="btn sec" onclick="finish()">Nộp bài</button>`;
+  h+='</div></div>';
+  app.innerHTML=h; window.scrollTo(0,0);
+}
+function pick(k){const it=S.items[S.cur]; if(S.mode==='practice'&&it.pick!==null) return; it.pick=k; render();}
+function go(k){if(k<0||k>=S.items.length) return; S.cur=k; render();}
+function finish(){
+  const un=S.items.filter(x=>x.pick===null).length;
+  if(un && !confirm(`Còn ${un} câu chưa làm. Vẫn nộp bài?`)) return;
+  const ok=S.items.filter(x=>x.pick===Q[x.i].a).length, n=S.items.length;
+  const sec=Math.round((Date.now()-S.t0)/1000);
+  const pct=ok/n*100;
+  const msg=pct>=90?'Xuất sắc! 🎉':pct>=70?'Khá tốt, cố thêm chút nữa! 👍':pct>=50?'Cần ôn thêm một chút 📖':'Hãy xem lại lý thuyết rồi thử lại nhé 💪';
+  let h=`<div class="card"><h1 style="text-align:center">Kết quả</h1>
+  <div class="score">${ok}/${n}</div>
+  <div class="muted" style="text-align:center">${msg}<br>Thời gian: ${Math.floor(sec/60)} phút ${sec%60} giây</div>
+  <div class="row" style="justify-content:center"><button class="btn" onclick="home()">Làm lại</button></div></div>
+  <div class="card"><h2>Xem lại bài làm</h2>`;
+  S.items.forEach((it,k)=>{
+    const q=Q[it.i], right=it.pick===q.a;
+    h+=`<div class="rev ${right?'ok':'bad'}"><div><b>Câu ${k+1}.</b> ${q.q}</div>
+    <div>${right?'✅':'❌'} Bạn chọn: ${it.pick===null?'<i>(bỏ trống)</i>':q.o[it.pick]}</div>
+    ${right?'':`<div>✔ Đáp án đúng: <b>${q.o[q.a]}</b></div>`}
+    <div class="muted">${q.e}</div></div>`;
+  });
+  h+='</div>';
+  app.innerHTML=h; window.scrollTo(0,0);
+}
+home();
+</script>
+</body>
+</html>
